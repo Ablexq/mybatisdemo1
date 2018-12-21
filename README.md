@@ -192,6 +192,19 @@ public interface UserMapper {
 
 ![](imgs/mapper.png)
 
+或者在启动类添加@MapperScan("mapper所在包的包名")
+``` 
+@MapperScan("com.example.demo.dao")
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+
+}
+```
+
 然后在测试类中添加测试代码：
 
 ``` 
@@ -222,6 +235,81 @@ getPassword========66666
 
 ![](imgs/mapperplugin.png)
 
+
+# 报错
+
+### 问题一：
+
+```
+[ERROR] Error resolving version for plugin 'org.mybatis.generator:mybatis-generator-maven-plugin' from the repositories [local (C:\Users\13579\.m2\repository), 
+
+central (https://repo.maven.apache.org/maven2)]:
+
+Plugin not found in any plugin repository -> [Help 1]
+```
+
+```
+[ERROR] Failed to execute goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2:
+generate (default-cli) on project demo: 
+Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2:
+generate failed: Exception getting JDBC Driver: ${spring.datasource.driver-class-name} -> [Help 1]
+```
+```
+[ERROR] Failed to execute goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2:
+generate (Generate MyBatis Artifacts) on project demo: 
+Unknown system variable 'query_cache_size' -> [Help 1]
+```
+```
+[ERROR] Failed to execute goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2:
+generate (default-cli) on project demo: 
+Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2:
+generate failed: Plugin org.mybatis.generator:mybatis-generator-maven-plugin:1.3.2 or one of its dependencies could not be resolved: 
+Failed to collect dependencies at org.mybatis.generator:mybatis-generator-maven-plugin:jar:1.3.2 -> 
+mysql:mysql-connector-java:jar:8.0.13 -> com.google.protobuf:protobuf-java:jar:3.6.1: 
+Failed to read artifact descriptor for com.google.protobuf:protobuf-java:jar:3.6.1: 
+Could not transfer artifact com.google.protobuf:protobuf-java:pom:3.6.1 from/to central (https://repo.maven.apache.org/maven2): 
+Connect to repo.maven.apache.org:443 [repo.maven.apache.org/151.101.52.215] failed: Connection timed out: connect -> [Help 1]
+```
+
+
+解决：pom.xml中添加
+```
+<repositories>
+	<repository>
+		<id>maven-repo</id>
+		<url>http://repo1.maven.org/maven2/</url>
+	</repository>
+	<repository>
+		<id>mvnrepository</id>
+		<url>http://mvnrepository.com/artifact/</url>
+	</repository>
+</repositories>
+
+<pluginRepositories>
+	<pluginRepository>
+		<id>maven-repo</id>
+		<url>http://repo1.maven.org/maven2/</url>
+	</pluginRepository>
+	<pluginRepository>
+		<id>mvnrepository</id>
+		<url>http://mvnrepository.com/artifact/</url>
+	</pluginRepository>
+</pluginRepositories>
+```
+
+### 问题二：
+
+```
+org.springframework.beans.factory.UnsatisfiedDependencyException: 
+Error creating bean with name 'com.example.demo.DemoApplicationTests': 
+Unsatisfied dependency expressed through field 'userMapper'; 
+nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException:
+ No qualifying bean of type 'com.example.demo.dao.UserMapper' available: 
+ expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: 
+ {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+```
+
+解决：在mapper类添加@mapper或者启动类添加mapperscan
 
 
 
