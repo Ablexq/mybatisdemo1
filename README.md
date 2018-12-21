@@ -1,5 +1,13 @@
 
+# MyBatis Generator介绍
+
+MyBatis Generator 是MyBatis 官方出品的一款，用来自动生成MyBatis的 mapper、dao、entity 的框架，
+
+让我们省去规律性最强的一部分最基础的代码编写。
+
 #  pom.xml 依赖
+
+在项目pom文件中，引入Mybatis-Generator插件，并且引入Mybatis和Mysql依赖。
 
 ``` 
 <!--mysql-->
@@ -166,6 +174,8 @@ resources/generator/generatorConfig.xml：
 > 修改数据库配置的路径等
 
 > 修改数据库的tableName等
+
+> 修改dao/mapper/entry包名
 
 # 点击maven的plugins里面的mybatis-generator即可自动生成相关的文件：
 
